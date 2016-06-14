@@ -44,6 +44,9 @@ class PTN(object):
             clean = re.sub('[\._]', ' ', clean)
             clean = re.sub('_+$', '', clean)
             self._part(name, [], None, clean.strip())
+    def _ext(self, name, clean):
+        if name == 'container':
+            self._part(name,[],None,clean)
 
     def parse(self, name):
         self.parts = {}
@@ -59,6 +62,11 @@ class PTN(object):
                 match = re.findall(pattern, self.torrent['name'], re.I)
             else:
                 match = re.findall(pattern, self.torrent['name'])
+            if len(match) == 0:
+                continue
+            
+            if key == 'container':
+                match = re.findall(pattern, slef.torrent['name'])
             if len(match) == 0:
                 continue
 
@@ -125,7 +133,7 @@ class PTN(object):
                 )
                 if self.torrent['map'].find(episode_name_pattern) != -1:
                     self._late('episodeName', clean.pop(0))
-
+                    
         if len(clean) != 0:
             if len(clean) == 1:
                 clean = clean[0]
